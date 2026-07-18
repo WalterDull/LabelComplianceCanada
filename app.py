@@ -23,6 +23,7 @@ from pathlib import Path
 from flask import Flask, render_template_string, request
 
 from label_rules import run_all_checks, Status
+from extractor import extract_label_json, validate_and_prettify, ALLOWED_EXTENSIONS, MAX_FILE_SIZE
 
 app = Flask(__name__)
 
@@ -80,6 +81,10 @@ PAGE = """
   .result .cite { font-size: 0.8rem; color: #666; }
   .result .cite a { color: #555; }
   .error { background: #ffebee; border: 1px solid #ef9a9a; padding: 0.75rem 1rem; border-radius: 6px; }
+  .notice { background: #e3f2fd; border: 1px solid #90caf9; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; margin-bottom: 1rem; }
+  .upload-box { border: 1px dashed #bbb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; background: #fbfbfb; }
+  .upload-box .label { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
+  input[type="file"] { font-size: 0.85rem; }
   footer { margin-top: 3rem; color: #888; font-size: 0.8rem; }
 </style>
 </head>
@@ -94,8 +99,24 @@ PAGE = """
     for full scope and limitations.
   </div>
 
+  <div class="upload-box">
+    <div class="label">Upload a label PDF or photo to auto-extract it into the box below (uses Claude — review the result before checking, it can misread small print).</div>
+    <form method="post" action="/extract" enctype="multipart/form-data" class="row">
+      <input type="file" name="label_file" accept=".pdf,.png,.jpg,.jpeg,.webp" required>
+      <button type="submit" class="secondary">Extract from PDF/photo</button>
+    </form>
+  </div>
+
+  {% if extracted %}
+  <div class="notice">
+    This JSON was extracted automatically from your uploaded file and has <strong>not</strong> been
+    verified. Review it against the original label &mdash; especially Nutrition Facts numbers,
+    allergens, and bilingual text &mdash; before trusting the compliance results below.
+  </div>
+  {% endif %}
+
   <form method="post" action="/check">
-    <textarea name="label_json" placeholder="Paste label_data.json here...">{{ prefill }}</textarea>
+    <textarea name="label_json" placeholder="Paste label_data.json here, or extract one above...">{{ prefill }}</textarea>
     <div class="row">
       <button type="submit">Check label</button>
       <a class="btn secondary" href="/?sample=compliant">Load compliant sample</a>
@@ -148,6 +169,14 @@ def _group_results(report_dict: dict):
     return [(STATUS_CLASS[s], STATUS_LABEL[s], by_status[s]) for s in STATUS_ORDER]
 
 
+def _render(prefill="", report=None, grouped=None, error=None, extracted=False):
+    return render_template_string(
+        PAGE, prefill=prefill, report=report, grouped=grouped or [], error=error, extracted=extracted,
+        repo_owner=os.environ.get("REPO_OWNER", "WalterDull"),
+        repo_name=os.environ.get("REPO_NAME", "LabelComplianceCanada"),
+    )
+
+
 @app.route("/", methods=["GET"])
 def index():
     sample = request.args.get("sample")
@@ -158,11 +187,7 @@ def index():
         prefill = SAMPLE_NONCOMPLIANT
     elif sample == "template":
         prefill = SCHEMA_TEMPLATE
-    return render_template_string(
-        PAGE, prefill=prefill, report=None, grouped=[], error=None,
-        repo_owner=os.environ.get("REPO_OWNER", "WalterDull"),
-        repo_name=os.environ.get("REPO_NAME", "LabelComplianceCanada"),
-    )
+    return _render(prefill=prefill)
 
 
 @app.route("/check", methods=["POST"])
@@ -181,11 +206,41 @@ def check():
     except Exception as e:  # noqa: BLE001 — surface any rule-engine error to the UI
         error = f"Error running checks: {e}"
 
-    return render_template_string(
-        PAGE, prefill=raw, report=report_dict, grouped=grouped, error=error,
-        repo_owner=os.environ.get("REPO_OWNER", "WalterDull"),
-        repo_name=os.environ.get("REPO_NAME", "LabelComplianceCanada"),
-    )
+    return _render(prefill=raw, report=report_dict, grouped=grouped, error=error)
+
+
+@app.route("/extract", methods=["POST"])
+def extract():
+    file = request.files.get("label_file")
+    error = None
+    prefill = ""
+    extracted = False
+
+    if not file or file.filename == "":
+        error = "No file selected."
+    else:
+        ext = Path(file.filename).suffix.lower()
+        media_type = ALLOWED_EXTENSIONS.get(ext)
+        if not media_type:
+            error = f"Unsupported file type '{ext}'. Upload a PDF, PNG, JPG, or WEBP."
+        else:
+            file_bytes = file.read()
+            if len(file_bytes) > MAX_FILE_SIZE:
+                error = f"File too large ({len(file_bytes) // (1024 * 1024)} MB) — max is {MAX_FILE_SIZE // (1024 * 1024)} MB."
+            else:
+                try:
+                    raw_json = extract_label_json(file_bytes, media_type)
+                    prefill = validate_and_prettify(raw_json)
+                    extracted = True
+                except EnvironmentError as e:
+                    error = str(e)
+                except json.JSONDecodeError:
+                    error = ("The extraction model did not return valid JSON. Try again, or use a "
+                              "clearer/higher-resolution photo or PDF.")
+                except Exception as e:  # noqa: BLE001
+                    error = f"Extraction failed: {e}"
+
+    return _render(prefill=prefill, error=error, extracted=extracted)
 
 
 if __name__ == "__main__":
