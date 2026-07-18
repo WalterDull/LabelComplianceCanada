@@ -1,0 +1,83 @@
+{
+  "product": {
+    "common_name_category": "whole wheat crackers",
+    "food_category": "general",
+    "is_imported": false,
+    "reference_amount_g": 30,
+    "reference_amount_category": "standard"
+  },
+  "bilingual_exemption": {
+    "applies": false
+  },
+  "common_name": {
+    "present": true,
+    "text_en": "Whole Wheat Crackers",
+    "text_fr": "Craquelins de blé entier",
+    "on_pdp": true,
+    "type_height_mm": 3.2,
+    "pds_area_cm2": 150
+  },
+  "net_quantity": {
+    "present": true,
+    "value": 250,
+    "unit": "g",
+    "on_pdp": true,
+    "metric": true
+  },
+  "ingredients": {
+    "present": true,
+    "list_en": ["Whole wheat flour", "Vegetable oil", "Sugar", "Salt", "Yeast", "Sesame seeds"],
+    "list_fr": ["Farine de blé entier", "Huile végétale", "Sucre", "Sel", "Levure", "Graines de sésame"]
+  },
+  "allergens": {
+    "declared_allergens": ["wheat", "sesame"],
+    "actual_allergens_present": ["wheat", "sesame"],
+    "aspartame_present": false
+  },
+  "name_and_place_of_business": {
+    "present": true,
+    "text": "Maple Grove Bakery Inc., Guelph, ON, Canada",
+    "type_height_mm": 1.8
+  },
+  "date_marking": {
+    "durable_life_days": 270,
+    "best_before_present": true,
+    "best_before_text_en": "Best before / BB 2027 JA 15",
+    "best_before_text_fr": "Meilleur avant / MA 2027 JA 15",
+    "storage_instructions_required": false
+  },
+  "nutrition_facts_table": {
+    "exempt": false,
+    "present": true,
+    "format": "standard",
+    "serving_size_household": "6 crackers",
+    "serving_size_metric": "30 g",
+    "percent_dv_shown": true,
+    "nutrients": {
+      "calories": 140,
+      "fat_g": 5,
+      "saturated_fat_g": 0.5,
+      "trans_fat_g": 0,
+      "cholesterol_mg": 0,
+      "sodium_mg": 190,
+      "carbohydrate_g": 21,
+      "fibre_g": 2,
+      "sugars_g": 2,
+      "protein_g": 3,
+      "potassium_mg": 75,
+      "calcium_mg": 10,
+      "iron_mg": 1.0
+    }
+  },
+  "fop_symbol": {
+    "present": false,
+    "product_prohibited_or_exempt": false
+  },
+  "claims": [
+    {"claim_text": "Source of fibre"}
+  ],
+  "country_of_origin": {},
+  "irradiation": {
+    "irradiated": false
+  }
+}

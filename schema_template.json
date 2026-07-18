@@ -1,0 +1,123 @@
+{
+  "_comment": "Template for label_data.json. Delete fields you don't have data for (they'll be flagged NEEDS_REVIEW) rather than guessing. Booleans: use null/omit if unknown, don't assume false.",
+
+  "product": {
+    "common_name_category": "e.g. 'ground beef', 'yogurt', 'canned tuna'",
+    "food_category": "general | meat_poultry | fish | dairy | maple | honey | fresh_produce | shell_egg | processed_egg | wine | brandy | processed_fruit_vegetable",
+    "is_imported": false,
+    "reference_amount_g": 30,
+    "reference_amount_category": "standard | small_package_le_30g | main_dish"
+  },
+
+  "bilingual_exemption": {
+    "applies": false,
+    "reason": ""
+  },
+
+  "common_name": {
+    "present": true,
+    "exempt": false,
+    "text_en": "",
+    "text_fr": "",
+    "on_pdp": true,
+    "type_height_mm": 3.2,
+    "pds_area_cm2": 120
+  },
+
+  "net_quantity": {
+    "present": true,
+    "exempt": false,
+    "value": 500,
+    "unit": "g",
+    "on_pdp": true,
+    "metric": true
+  },
+
+  "ingredients": {
+    "present": true,
+    "exempt_or_single_ingredient": false,
+    "list_en": ["Water", "Sugar", "Wheat flour", "Salt"],
+    "list_fr": ["Eau", "Sucre", "Farine de blé", "Sel"]
+  },
+
+  "allergens": {
+    "declared_allergens": ["wheat"],
+    "actual_allergens_present": ["wheat"],
+    "cross_contamination_statement": "",
+    "aspartame_present": false,
+    "phenylalanine_statement_present": false
+  },
+
+  "name_and_place_of_business": {
+    "present": true,
+    "exempt": false,
+    "text": "Company Inc., Toronto, ON, Canada",
+    "type_height_mm": 1.6
+  },
+
+  "date_marking": {
+    "durable_life_days": 365,
+    "best_before_exempt": false,
+    "best_before_present": false,
+    "best_before_text_en": "",
+    "best_before_text_fr": "",
+    "storage_instructions_required": false,
+    "storage_instructions_present": false
+  },
+
+  "nutrition_facts_table": {
+    "exempt": false,
+    "exemption_reason": "",
+    "present": true,
+    "format": "standard",
+    "serving_size_household": "1 cup",
+    "serving_size_metric": "250 mL",
+    "percent_dv_shown": true,
+    "nutrients": {
+      "calories": 150,
+      "fat_g": 5,
+      "saturated_fat_g": 1.5,
+      "trans_fat_g": 0,
+      "cholesterol_mg": 10,
+      "sodium_mg": 200,
+      "carbohydrate_g": 22,
+      "fibre_g": 2,
+      "sugars_g": 8,
+      "protein_g": 4,
+      "potassium_mg": 150,
+      "calcium_mg": 100,
+      "iron_mg": 1.0
+    }
+  },
+
+  "fop_symbol": {
+    "present": false,
+    "product_prohibited_or_exempt": false
+  },
+
+  "claims": [
+    {"claim_text": "Source of fibre"}
+  ],
+
+  "country_of_origin": {
+    "declared": ""
+  },
+
+  "meat_poultry_specific": {
+    "grade_name_present": false,
+    "grade_required": false
+  },
+
+  "fish_specific": {
+    "was_previously_frozen": false,
+    "previously_frozen_declared": false,
+    "grade_required": false,
+    "grade_name_present": false
+  },
+
+  "irradiation": {
+    "irradiated": false,
+    "statement_present": false,
+    "symbol_present": false
+  }
+}

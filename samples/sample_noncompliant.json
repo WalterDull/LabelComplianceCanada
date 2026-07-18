@@ -1,0 +1,78 @@
+{
+  "_comment": "Deliberately non-compliant sample used to demonstrate the checker's FAIL/NEEDS_REVIEW output.",
+  "product": {
+    "common_name_category": "instant noodle soup bowl",
+    "food_category": "general",
+    "is_imported": false,
+    "reference_amount_g": 220,
+    "reference_amount_category": "main_dish"
+  },
+  "bilingual_exemption": {
+    "applies": false
+  },
+  "common_name": {
+    "present": true,
+    "text_en": "Chicken Flavour Instant Noodle Bowl",
+    "text_fr": "",
+    "on_pdp": true,
+    "type_height_mm": 1.2,
+    "pds_area_cm2": 200
+  },
+  "net_quantity": {
+    "present": true,
+    "value": 100,
+    "unit": "g",
+    "on_pdp": true,
+    "metric": true
+  },
+  "ingredients": {
+    "present": true,
+    "list_en": ["Wheat noodles", "Vegetable oil", "Salt", "Soy sauce powder", "Monosodium glutamate", "Spices"],
+    "list_fr": []
+  },
+  "allergens": {
+    "declared_allergens": ["wheat"],
+    "actual_allergens_present": ["wheat", "soy"],
+    "aspartame_present": false
+  },
+  "name_and_place_of_business": {
+    "present": true,
+    "text": "Global Noodle Co., Vancouver, BC, Canada",
+    "type_height_mm": 1.0
+  },
+  "date_marking": {
+    "durable_life_days": 60,
+    "best_before_present": false,
+    "storage_instructions_required": false
+  },
+  "nutrition_facts_table": {
+    "exempt": false,
+    "present": true,
+    "format": "standard",
+    "serving_size_household": "1 bowl",
+    "serving_size_metric": "220 g",
+    "percent_dv_shown": true,
+    "nutrients": {
+      "calories": 310,
+      "fat_g": 12,
+      "saturated_fat_g": 6,
+      "trans_fat_g": 0,
+      "sodium_mg": 1370,
+      "carbohydrate_g": 45,
+      "fibre_g": 1,
+      "sugars_g": 3,
+      "protein_g": 6
+    }
+  },
+  "fop_symbol": {
+    "present": false,
+    "product_prohibited_or_exempt": false
+  },
+  "claims": [
+    {"claim_text": "Low fat"}
+  ],
+  "country_of_origin": {},
+  "irradiation": {
+    "irradiated": false
+  }
+}
